@@ -1,4 +1,8 @@
 const orderOptionsContainer = document.getElementById("OrderOptions");
+// const orderOptionsInputs = document.querySelectorAll(".OrderOptions input");
+const orderBtn = document.getElementById("buyBtn");
+const orderPriceDisplay = document.getElementById("orderPrice");
+
 document.addEventListener("DOMContentLoaded",()=> {loadOrderOptions();});
 
 
@@ -29,6 +33,39 @@ const LaTouche =
 
 const orderOpts = [laBase,laTaille,leLait,LaTouche];
 
+let totalPrice = 0;
+const selectedOptions = [];
+function caffeOrder(e)
+{
+    if(e.target.type === "radio")
+    {
+        const Optionsgroup = document.querySelectorAll(`input[name="${e.target.name}"]`);
+        Optionsgroup.forEach( opt =>{
+            if(selectedOptions.includes(opt) && !opt.checked)
+            {
+
+                selectedOptions.splice(selectedOptions.indexOf(opt),1);
+                totalPrice -= Number(opt.value);
+                console.log(opt.value);
+            }
+        })
+    }
+    
+    if(!selectedOptions.includes(e.target) && e.target.checked)
+    {
+        selectedOptions.push(e.target);
+        totalPrice += Number( e.target.value);
+    }
+    if(selectedOptions.includes(e.target) && !e.target.checked)
+    {
+        selectedOptions.splice(selectedOptions.indexOf(e.target),1);
+        totalPrice -= Number( e.target.value);
+    }
+
+    orderPriceDisplay.innerText = `${totalPrice} DH`;   
+    console.log(e.target, e.target.checked);
+}
+
 function loadOrderOptions()
 {
     const choixUnique = "Choix unique";
@@ -58,7 +95,7 @@ function loadOrderOptions()
         {
             subOption.innerHTML=`
                 
-                    <input type="radio" name="${opt.categoryName}" value="${subOpt.id}" data-price="${subOpt.price}">
+                    <input type="radio" name="${opt.categoryName}" value="${subOpt.price}" data-id="${subOpt.id}">
                     <span><span class="checkmark" aria-hidden="true">✓</span>${subOpt.title}</span>
                     <span>${subOpt.price} DH</span>
                 
@@ -67,7 +104,7 @@ function loadOrderOptions()
         {
              subOption.innerHTML=`
                 
-                    <input type="checkbox" name="${opt.categoryName}" value="${subOpt.id}" data-price="${subOpt.price}">
+                    <input type="checkbox" name="${opt.categoryName}" value="${subOpt.price}" data-id="${subOpt.id}">
                     <span><span class="checkmark" aria-hidden="true">✓</span>${subOpt.title}</span>
                     <span>${subOpt.price} DH</span>
                 
@@ -75,7 +112,9 @@ function loadOrderOptions()
         }
 
         subOption.classList.add("option");
+        subOption.querySelector("input").addEventListener("change",caffeOrder);
         cardsContainer.appendChild(subOption);
+
     }
     
 
