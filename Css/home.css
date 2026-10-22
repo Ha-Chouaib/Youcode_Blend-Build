@@ -219,7 +219,19 @@ main{
     line-height: 100%;
     margin-bottom:10px ;
 }
-#pricePanel
+/* #pricePanel
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF;
+    flex-wrap: wrap;
+    height: 15vh;
+    margin-top:40px ;
+    padding: 0px 30px;
+} */
+.pricePanel_OrderPhase
 {
     display: flex;
     flex-direction: row;
@@ -231,13 +243,25 @@ main{
     margin-top:40px ;
     padding: 0px 30px;
 }
-#buyBtn
+
+.pricePanel_TicketPhase
 {
-    padding: 20px;
+    width: 50%;
+    height: 10vh;
+    background-color: #FAF7F0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.pricePanel_OrderPhase_orderBtn
+{
+    padding: 15px;
     background:#394B32 ;
     color: #FFFFFF;
-    font-size: 2vw;
+    font-size: 1.5vw;
     border-radius: 10px;
+    cursor: pointer;
 }
 #orderPrice
 {
@@ -282,6 +306,17 @@ footer small
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+.flexBetween_Column
+{
+    flex-direction: column;
+    align-items: center;    
+}
+.flexColumn
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .option
@@ -331,6 +366,103 @@ footer small
     grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
     gap: 10px;
 }
+.factorContainer
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:  -5px 5px 90px 1px #394b327f;
+    
+}
+.factorHeader
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    gap: 20px;
+}
+.badge
+{
+    background: #E9EEDC;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 10px;
+}
+.factorDetails
+{
+    border-top: 1px solid #394B32;
+    border-bottom: 1px solid #394B32;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0px;
+}
+.factorFooter
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    gap: 20px;
+}
+.factorFooter button
+{
+    width: 100%;
+    height: 50px;
+    background: #394B32;
+    border-radius: 20px;
+    color: #E9EEDC;
+    cursor: pointer;
+    font-size: 1.2vw;
+    
+    
+}
+.factorFooter > div:first-child
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1vw;
+    font-weight: bolder;
+}
+.factorFooter > small:last-child
+{
+    width: 100%;
+    background-color:#E9EEDC;
+    border-radius: 10px;
+    opacity: .5;
+}
+
+
+.flex_row_Between--center
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.felx_column_center--gap--md
+{
+    
+    gap: 20px;
+}
+.pricePanel_TicketPhase button
+{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+}
+
 @media screen and (max-width: 550px) {
     header section > nav > ul{
         display:none;
