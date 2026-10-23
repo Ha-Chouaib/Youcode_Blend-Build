@@ -43,7 +43,7 @@ function showOrderFactor()
 
         selectedOptions?.forEach(opt => {
             const row = document.createElement("div");
-            row.innerHTML= `<span>${opt?.title}</span> <samll>${opt?.price}</small>`;
+            row.innerHTML= `<span>${opt?.title}</span> <samll>${opt?.price}DH</small>`;
             row.classList.add("flexBetween")
             cafeSignatureText +=`${opt?.title}. `;
             factorDtails.appendChild(row);
