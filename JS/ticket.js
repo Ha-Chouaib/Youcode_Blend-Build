@@ -19,9 +19,8 @@ function laodTicketData()
     let price = totalPrice = localStorage.getItem("totalPrice");
     totalPrice = price ? Number(  JSON.parse(price) ) : 0;
     
-    cafeSignature = localStorage.getItem("cafeSignatureText");
 
-    console.log(selectedOptions,totalPrice,cafeSignature);
+    console.log(selectedOptions,totalPrice);
 
     
 }
@@ -43,11 +42,10 @@ function showOrderFactor()
         factorDtails.innerHTML="";
 
         selectedOptions?.forEach(opt => {
-            console.log(opt);
             const row = document.createElement("div");
-            row.innerHTML= `<span>${opt?.dataset?.title}</span> <samll>${opt?.value}</small>`;
+            row.innerHTML= `<span>${opt?.title}</span> <samll>${opt?.price}</small>`;
             row.classList.add("flexBetween")
-            cafeSignatureText +=`${opt?.dataset?.title}. `;
+            cafeSignatureText +=`${opt?.title}. `;
             factorDtails.appendChild(row);
         });
     }else

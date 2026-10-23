@@ -48,7 +48,7 @@ function caffeOrder(e)
             if(selectedOptions.includes(opt) && !opt.checked)
             {
 
-                selectedOptions.splice(selectedOptions.indexOf(opt),1);
+                selectedOptions.splice(selectedOptions.indexOf({title: opt.target.dataset.title, price: opt.target.value}),1);
                 totalPrice -= Number(opt.value);
             }
         })
@@ -56,7 +56,7 @@ function caffeOrder(e)
     
     if(!selectedOptions.includes(e.target) && e.target.checked)
     {
-        selectedOptions.push(e.target);
+        selectedOptions.push({title: e.target.dataset.title, price: e.target.value});
         totalPrice += Number( e.target.value);
 
     }
@@ -64,7 +64,7 @@ function caffeOrder(e)
     
     if(selectedOptions.includes(e.target) && !e.target.checked)
     {
-        selectedOptions.splice(selectedOptions.indexOf(e.target),1);
+        selectedOptions.splice(selectedOptions.indexOf({title: e.target.dataset.title, price: e.target.value}),1);
         totalPrice -= Number( e.target.value);
     }
 
@@ -142,7 +142,6 @@ function saveSelectedOptions()
 
     localStorage.setItem("selectedOptions",JSON.stringify(selectedOptions));
     localStorage.setItem("totalPrice",JSON.stringify(totalPrice));
-    localStorage.setItem("cafeSignatureText",cafeSignatureText);
 }
 
 function FillPricePannel()
