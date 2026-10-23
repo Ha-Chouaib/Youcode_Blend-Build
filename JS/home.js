@@ -35,7 +35,7 @@ const LaTouche =
 const orderOpts = [laBase,laTaille,leLait,LaTouche];
 
 let totalPrice = 0;
-let selectedOptions = [];
+let selectedInputs = [];
 let cafeSignatureText = "";
 
 
@@ -45,26 +45,26 @@ function caffeOrder(e)
     {
         const Optionsgroup = document.querySelectorAll(`input[name="${e.target.name}"]`);
         Optionsgroup.forEach( opt =>{
-            if(selectedOptions.includes(opt) && !opt.checked)
+            if(selectedInputs.includes(opt) && !opt.checked)
             {
 
-                selectedOptions.splice(selectedOptions.indexOf({title: opt.target.dataset.title, price: opt.target.value}),1);
+                selectedInputs.splice(selectedInputs.indexOf(opt),1);
                 totalPrice -= Number(opt.value);
             }
         })
     }
     
-    if(!selectedOptions.includes(e.target) && e.target.checked)
+    if(!selectedInputs.includes(e.target) && e.target.checked)
     {
-        selectedOptions.push({title: e.target.dataset.title, price: e.target.value});
+        selectedInputs.push(e.target);
         totalPrice += Number( e.target.value);
 
     }
     
     
-    if(selectedOptions.includes(e.target) && !e.target.checked)
+    if(selectedInputs.includes(e.target) && !e.target.checked)
     {
-        selectedOptions.splice(selectedOptions.indexOf({title: e.target.dataset.title, price: e.target.value}),1);
+        selectedInputs.splice(selectedInputs.indexOf(e.target),1);
         totalPrice -= Number( e.target.value);
     }
 
@@ -132,11 +132,12 @@ function loadOrderOptions()
 });
 }
 
-function saveSelectedOptions()
+function saveOrderData()
 {
 
-    selectedOptions.forEach(inp => {
-
+    let selectedOptions = [];
+    selectedInputs.forEach(inp => {
+        selectedOptions.push({title: inp.dataset.title, price: inp.value});
     
     });
 
