@@ -15,13 +15,9 @@ function laodTicketData()
 
     selectedOptions =Data? JSON.parse(Data) : [];
     
-
     let price = totalPrice = localStorage.getItem("totalPrice");
     totalPrice = price ? Number(  JSON.parse(price) ) : 0;
     
-
-    console.log(selectedOptions,totalPrice);
-
     
 }
 
@@ -66,7 +62,7 @@ function showOrderFactor()
 
     const OrderAgainBtn = document.createElement("button");
     OrderAgainBtn.innerText="Créer un autre café   →";
-    OrderAgainBtn.addEventListener("click",() => {  }); //come back
+    OrderAgainBtn.addEventListener("click",() => { backToOrderPage(); }); //come back
 
     const paymentLastMsg = document.createElement("small");
     paymentLastMsg.innerText="✓  Votre sélection reste modifiable à tout moment.";
@@ -88,6 +84,15 @@ function showOrderFactor()
     orderOptionsContainer.classList.add("factorContainer");
     
 }
+
+function backToOrderPage()
+{
+    let reload = true;
+    localStorage.setItem("isReloadPage",JSON.stringify(reload));
+    history.back();
+    
+}
+
 function displayCafeSignature()
 {
     pricePanel.innerHTML=`

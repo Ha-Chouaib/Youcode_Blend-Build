@@ -5,7 +5,19 @@ let orderPriceDisplay = null;
 let cafeSignature = null;
 const pricePanel = document.getElementById("pricePanel");
 
+
 document.addEventListener("DOMContentLoaded",()=> {loadOrderOptions(); FillPricePannel();});
+window.addEventListener("pageshow", (e) => {
+    
+    let reloadPage = JSON.parse(localStorage.getItem("isReloadPage")?? false);
+    if(reloadPage)
+    {
+        window.location.reload();
+        localStorage.removeItem("isReloadPage");
+        
+    }
+
+})
 
 const laBase =
 {
@@ -140,7 +152,6 @@ function saveOrderData()
         selectedOptions.push({title: inp.dataset.title, price: inp.value});
     
     });
-
     localStorage.setItem("selectedOptions",JSON.stringify(selectedOptions));
     localStorage.setItem("totalPrice",JSON.stringify(totalPrice));
 }
@@ -160,7 +171,7 @@ function FillPricePannel()
 
         orderPriceDisplay = document.getElementById("orderPrice");
         orderBtn = document.getElementById("orderBtn"); 
-        orderBtn.addEventListener("click",()=>{ saveSelectedOptions() });
+        orderBtn.addEventListener("click",()=>{ saveOrderData() });
 
 }
 
