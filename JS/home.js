@@ -5,7 +5,7 @@ let orderPriceDisplay = null;
 let cafeSignature = null;
 const pricePanel = document.getElementById("pricePanel");
 
-document.addEventListener("DOMContentLoaded",()=> {loadOrderOptions(); switchPricePannelContent();});
+document.addEventListener("DOMContentLoaded",()=> {loadOrderOptions(); FillPricePannel();});
 
 const laBase =
 {
@@ -132,95 +132,36 @@ function loadOrderOptions()
 });
 }
 
-function showOrderFactor()
+function saveSelectedOptions()
 {
-    
-    const factorHeader = document.createElement("div");
-    const factorDtails = document.createElement("div");
-    const factorFooter = document.createElement("div");
 
-    factorHeader.innerHTML=`
-    <span class="badge">✓  Sélection ajoutée</span>
-    <h3>Votre récapitulatif</h3>
-    <small>Une création personnalisée · Quantité : 1</small>
-    `;
-    selectedOptions.forEach(opt => {
-        const row = document.createElement("div");
-        row.innerHTML= `<span>${opt.dataset.title}</span> <samll>${opt.value}</small>`;
-        row.classList.add("flexBetween")
-        cafeSignatureText +=`${opt.dataset.title}. `;
-        factorDtails.appendChild(row);
+    selectedOptions.forEach(inp => {
+
+    
     });
 
-    
-    const displayPrice = document.createElement("div");
-    displayPrice.innerHTML = `
-        <small>Total</small> <small>${totalPrice}DH</small>
-    `;
-    displayPrice.classList.add("flexBetween");
-
-    const paymentMsg = document.createElement("small");
-    paymentMsg.innerText = "Prix de cette sélection · aucun paiement effectué."
-
-    const OrderAgainBtn = document.createElement("button");
-    OrderAgainBtn.innerText="Créer un autre café   →";
-    OrderAgainBtn.addEventListener("click",() => { totalPrice = 0; selectedOptions=[]; loadOrderOptions(); switchPricePannelContent();});
-
-    const paymentLastMsg = document.createElement("small");
-    paymentLastMsg.innerText="✓  Votre sélection reste modifiable à tout moment.";
-    
-    factorFooter.appendChild(displayPrice);
-    factorFooter.appendChild(paymentMsg);
-    factorFooter.appendChild(OrderAgainBtn);
-    factorFooter.appendChild(paymentLastMsg);
-
-    factorHeader.classList.add("factorHeader");
-    factorDtails.classList.add("factorDetails");
-    factorFooter.classList.add("factorFooter");
-
-    orderOptionsContainer.innerHTML="";
-
-    orderOptionsContainer.appendChild(factorHeader);
-    orderOptionsContainer.appendChild(factorDtails);
-    orderOptionsContainer.appendChild(factorFooter);
-    orderOptionsContainer.classList.add("factorContainer");
-    
+    localStorage.setItem("selectedOptions",JSON.stringify(selectedOptions));
+    localStorage.setItem("totalPrice",JSON.stringify(totalPrice));
+    localStorage.setItem("cafeSignatureText",cafeSignatureText);
 }
 
-function switchPricePannelContent(isOrderPhase=true)
+function FillPricePannel()
 {
-    if(isOrderPhase)
-    {
+
         pricePanel.innerHTML = `
         <div>
                 <small>Votre création · Café sur mesure</small>
                 <Small id="orderPrice">00.00DH</Small>
-            </div>
-            <button id="orderBtn" class="pricePanel_OrderPhase_orderBtn">Ajouter au panier   →</button>
+        </div>
+            <button id="orderBtn" class="pricePanel_OrderPhase_orderBtn"><a href="./Ticket.html" target="_self"> Ajouter au panier   → </a></button>
         `;        
-        pricePanel.classList.remove("pricePanel_TicketPhase");
         pricePanel.classList.add("pricePanel_OrderPhase");
         
 
         orderPriceDisplay = document.getElementById("orderPrice");
         orderBtn = document.getElementById("orderBtn"); 
-        orderBtn.addEventListener("click",()=>{showOrderFactor(); switchPricePannelContent(false);});
+        orderBtn.addEventListener("click",()=>{ saveSelectedOptions() });
 
-    }else
-    {
-        pricePanel.innerHTML=`
-        <div>
-        <h4>Votre café signature</h4>
-        <small id="cafeSignature">...</small>
-        </div>
-        <button>Modifier</button>
-        ` ;
-        cafeSignature= document.getElementById("cafeSignature");
-        cafeSignature.innerText= cafeSignatureText;
-        pricePanel.classList.add("pricePanel_TicketPhase");
-        pricePanel.classList.remove("pricePanel_OrderPhase");
-    }
-    
 }
 
 

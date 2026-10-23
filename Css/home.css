@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -263,6 +264,10 @@ main{
     border-radius: 10px;
     cursor: pointer;
 }
+#orderBtn a{
+text-decoration: none;
+color:  white;
+}
 #orderPrice
 {
     font-size: 3vw;
@@ -443,18 +448,6 @@ footer small
 }
 
 
-.flex_row_Between--center
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-.felx_column_center--gap--md
-{
-    
-    gap: 20px;
-}
 .pricePanel_TicketPhase button
 {
     border: none;
