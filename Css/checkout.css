@@ -1,0 +1,118 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    height: 100vh;
+    background-color: #FAF7F0;
+}
+main
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    width: 100%;
+    height: 100%;
+}
+#SelectedProductsConatiner
+{
+    width: 40%;
+    height: 80%;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.119);
+    box-shadow: inset 10px 10px 30px 4px #394B32;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+#addNewOrderBtn
+{
+    padding: 10px 30px;
+    border-radius: 10px;
+    background: #0f9c02;
+    cursor: pointer;
+    border: none;
+    color: white;
+    box-shadow: inset 3px 3px 10px 3px #394B32;
+}
+#selectedOrdersPannel
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    width: 100%;
+    height: 90%;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+}
+.OrderPannel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: #394b32;
+    border-radius: 20px;
+    padding: 10px;
+    color: #FAF7F0;
+
+}
+.OrderPannel-Info 
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+}
+.OrderPannel-actions
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+}
+.OrderPannel-actions button
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: inset 2px 2px 4px 2px rgb(231, 212, 138);
+    opacity: .5;
+}
+.OrderPannel-actions button:hover
+{
+    opacity: 1;
+}
+.OrderPannel-actions > button:first-child{
+    
+    background: rgba(255, 0, 0, 0.979);
+}
+.OrderPannel-actions > button:last-child{
+    
+    background: rgb(2, 219, 2);
+}
+.OrderPannel-actions > small{
+    background: rgba(0, 0, 0, 0.986);
+    box-shadow: inset 2px 2px 4px 2px rgb(220, 218, 159);
+    border-radius: 10px;
+    padding: 5px 20px;
+
+
+}
