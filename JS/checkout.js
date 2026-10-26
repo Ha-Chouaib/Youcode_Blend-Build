@@ -1,6 +1,29 @@
 
 const selectedProdContainer = document.getElementById("selectedOrdersPannel");
+const appendNewBtn = document.getElementById("addNewOrderBtn");
+const appendProductModal = document.getElementById("appendModal");
+const closeModal = document.getElementById("closeModal");
+const searchBtn = document.getElementById("searchBtn");
+const searchInput = document.getElementById("searchInp");
+const filtredProductsContainer = document.getElementById("searchResultContainer");
 
+appendNewBtn.addEventListener("click", ()=>{
+    appendProductModal.style.display = "flex";
+});
+
+closeModal.addEventListener("click",()=>
+{
+    appendProductModal.style.display = "none";
+});
+searchBtn.addEventListener("click",displayFiltredProducts);
+
+// window.addEventListener("click",(e)=>{
+//     if(e.target == "modal")
+//     {
+//         appendProductModal.style.display = "none";
+//     }
+
+// });
 
 // 1. Le tableau global (Catalogue complet incluant les accessoires)
 const coffeeProducts = [
@@ -23,6 +46,7 @@ let coffeeCart = [
   { id: "c8", name: "Mug Isotherme Noir", price: 15.00, quantity: 1, image: "mug.jpg" }
 ];
 
+
 document.addEventListener("DOMContentLoaded",loadSeletedProducts)
 
 function loadSeletedProducts()
@@ -30,6 +54,7 @@ function loadSeletedProducts()
     coffeeCart.forEach(prod =>{
         selectedProdContainer.innerHTML+=`
          <div class="OrderPannel">
+
             <span class="OrderPannel-Info">
                 <span>${prod.name}</span>
                 <small>${prod.price}DH</small>
@@ -80,5 +105,32 @@ function decreaseProductQuantity(e)
     }
     
     
+}
+
+function displayFiltredProducts()
+{
+    let searchTerm = searchInput.value;
+            filtredProductsContainer.innerHTML = "";
+    if(searchTerm === "")
+    {
+        filtredProductsContainer.innerText = "please enter a product name to be shown";
+    }else
+    {
+        let filterd = coffeeProducts.filter(p => p.name.startsWith(searchTerm));
+        filterd.forEach(p =>{
+            filtredProductsContainer.innerHTML+=`
+                <div class="OrderPannel OrderPannel-filtered">
+         
+                    <span class="OrderPannel-Info">
+                        <span>${p.name}</span>
+                        <small>${p.price}DH</small>
+                    </span>
+                    <div class="OrderPannel-actions">
+                        <button class="increaseBtns addToListBtns" >+</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
 }
 
