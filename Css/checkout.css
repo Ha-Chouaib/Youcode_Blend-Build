@@ -8,6 +8,7 @@ body
 {
     height: 100vh;
     background-color: #FAF7F0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 main
 {
@@ -64,7 +65,7 @@ main
     background: #394b32;
     border-radius: 20px;
     padding: 10px;
-    color: #FAF7F0;
+    color: #faf7f094;
 
 }
 .OrderPannel-Info 

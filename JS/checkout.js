@@ -35,13 +35,50 @@ function loadSeletedProducts()
                 <small>${prod.price}DH</small>
             </span>
             <div class="OrderPannel-actions">
-                <button>-</button>
-                <small>${prod.quantity}</small>
-                <button>+</button>
+                <button class="decreaseBtns" data-product-id ="${prod.id}">-</button>
+                <small id="id_${prod.id}">${prod.quantity}</small>
+                <button class="increaseBtns" data-product-id ="${prod.id}">+</button>
             </div>
         </div>
         `;
-        
     });
+
+    const increaseQuantityBtns = selectedProdContainer.querySelectorAll(".increaseBtns");
+    const decreaseQuantityBtns = selectedProdContainer.querySelectorAll(".decreaseBtns");
+
+    increaseQuantityBtns.forEach(btn =>{
+        btn.addEventListener("click", increaseProductQuantity);
+    });
+    decreaseQuantityBtns.forEach(btn =>{
+        btn.addEventListener("click", decreaseProductQuantity);
+    });
+}
+
+function increaseProductQuantity(e)
+{
+    let targetBtn = e.target;
+    let productId = targetBtn.dataset.productId;
+
+    let targetProduct = coffeeCart.find(prod => prod.id === productId);
+    targetProduct.quantity ++;
+    const displayQuantity = document.getElementById(`id_${targetProduct.id}`);
+    displayQuantity.innerText = targetProduct.quantity.toString();
+
+}
+
+function decreaseProductQuantity(e)
+{
+    let targetBtn = e.target;
+    let productId = targetBtn.dataset.productId;
+
+    let targetProduct = coffeeCart.find(prod => prod.id === productId);
+    if(targetProduct.quantity > 0)
+    {
+        targetProduct.quantity --;
+        const displayQuantity = document.getElementById(`id_${targetProduct.id}`);
+        displayQuantity.innerText = targetProduct.quantity.toString();
+    }
+    
+    
 }
 
