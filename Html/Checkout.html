@@ -8,17 +8,34 @@
     <script src="../JS/checkout.js" defer></script>
 </head>
 <body>
+    <header>
+        <div class="header-logo">
+            <h1>❦ BRUME</h1>
+            <span>le cafe reinvente</span>
+        </div>
+        <div class="header-paymentTitle">
+            <span>🔒︎ Paiment securise    ❧</span>
+        </div>
+    </header>
     <main>
         <section id="SelectedProductsConatiner">
+            <div>
+                <div>
+                <h3>Votre commande</h3>
+                <span>verifiez vos articles avant de proceder au paiement.</span>
+            </div>
+            <div class="selectedOrders-totalPriceContainer">
+                <small>Total</small>     <small><span id="totalPrice">00.00</span><span>DH ❧</span></small>
+            </div>
+        
+            </div>
             <div id="selectedOrdersPannel">
                
             </div>
             <button id="addNewOrderBtn">Add more +</button>
 
         </section>
-        <section id="PaymentContainer">
-
-        </section>
+        
         <section class="modal" id="appendModal" >
             <section class="modal-content">
                 <span id="closeModal">X</span>
@@ -36,6 +53,88 @@
                     </div>
                 </section>
             </section>
+        </section>
+        
+        <section id="PaimentContainer">
+            <h3>Payment Card</h3>
+
+            <form action="" class="paymentForm">
+                <fieldset id="cartBancaireGroup">
+                    <legend>Details de la cart</legend>
+                    <label>
+                        <span>Numero de la cart</span>
+                        <div class="paiement-inputContainer"  id="paiment-CartNum">
+                            <input type="text" placeholder="1234 5678 9012 3456" name="cardNumber" required>
+                            <span>💳︎</span>
+                        </div>
+                        <small class="errorMsg" id="cardNumber">invalid card number, please enter a valid one!</small>
+                    </label>
+                    <div>
+                        <label >
+                            <span>Date d'expiration</span>
+                            <div class="paiement-inputContainer">
+                                <input type="text" placeholder="MM / AA" name="expiry" maxlength="5"  required>
+                                <span>🗓︎</span>
+                            </div>
+                            <small class="errorMsg" id="expiry">invalid date, please enter a valid one!</small>
+                        </label>
+                        <label >
+                            <span>CVV</span>
+                            <div class="paiement-inputContainer">
+                                <input type="text" placeholder="123"  name="cvv" required>
+                                <span>ⓘ</span>
+                            </div>
+                            <small class="errorMsg" id="cvv">invalid cvv number, please enter a valid one!</small>
+                        </label>
+                    </div>
+
+                </fieldset>
+                <fieldset id="cartBancaireGroup">
+                    <legend>Informations personnelles</legend>
+                    
+                    <div>
+                        <label >
+                            <span>Nom</span>
+                            <div class="paiement-inputContainer">
+                                <input type="text" placeholder="Votre nom" name="firstName" required>
+                                <span>👤︎</span>
+                            </div>
+                            <small class="errorMsg" id="firstName">invalid name, please enter a valid one!</small>
+                        </label>
+                        <label >
+                            <span>Prenom</span>
+                            <div class="paiement-inputContainer">
+                                <input type="text" placeholder="Votre prenom" name="lastName" required>
+                                <span>👤︎</span>
+                            </div>
+                            <small class="errorMsg" id="lastName">invalid name, please enter a valid one!</small>
+                        </label>
+                    </div>
+                    
+                    <div>
+                        <label >
+                            <span>Email</span>
+                            <div class="paiement-inputContainer">
+                                <input type="email" placeholder="exemple@gmail.com" name="email" required>
+                                <span>✉︎</span>
+                            </div>
+                            <small class="errorMsg" id="email">invalid email, please enter a valid one!</small>
+                        </label>
+                        
+                        <label >
+                            <span>Telephone</span>
+                            <div class="paiement-inputContainer">
+                                <input type="tel" placeholder="+212 0 45 88 90 01" name="phone" required>
+                                <span>✆</span>
+                            </div>
+                            <small class="errorMsg" id="phone">invalid value, please enter a valid one!</small>
+                        </label>
+                    </div>
+
+                </fieldset>
+               <button type="submit" id="paymentBtn">🔒︎ Payer maintenant ⟶</button>
+            </form>
+
         </section>
     </main>
 </body>

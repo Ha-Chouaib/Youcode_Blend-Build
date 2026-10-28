@@ -7,41 +7,109 @@
 body
 {
     height: 100vh;
-    background-color: #FAF7F0;
+    background-color: #E8DBC7;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
+header
+{
+    width: 95%;
+    background: #394B32;
+    height: 9vh;
+    border-radius: 10px;
+    margin-top: 10px;
+    color: #E8DBC7;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+h1{
+     border-right: 1px solid #E8DBC7;
+     padding-right: 30px ;
+}
+header > div
+{
+    display: flex;
+    align-items: center;
+}
+header div > span{
+    font-size: 9px;
+    padding-left: 30px;
+    margin-left: 20px;
+    font-style: italic;
+}
+
+
 main
 {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     justify-content: space-between;
+    flex-wrap: wrap;
     padding: 0 20px;
     width: 100%;
     height: 100%;
 }
+
 #SelectedProductsConatiner
 {
-    width: 40%;
-    height: 80%;
+    width: 45%;
+    min-width: 300px;
+    height: fit-content;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.119);
-    box-shadow: inset 10px 10px 30px 4px #394B32;
+    background: #f2efe6f6;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 70px 3px rgba(0, 0, 0, 0.317);
     padding: 10px;
     display: flex;
     flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 20px;
+    
+}
+#SelectedProductsConatiner > div:first-child
+{
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
-#addNewOrderBtn
+#SelectedProductsConatiner > div:first-child h3{
+    color: #234a23;
+    font-style: italic;
+    font-size: 20px;
+}
+
+.selectedOrders-totalPriceContainer
+{
+    display: flex;
+    gap: 20px;
+    background: #397b3979;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 20px;
+    color: #234a23;
+    border: .5px solid #234a23;
+}
+#addNewOrderBtn ,#paymentBtn
 {
     padding: 10px 30px;
     border-radius: 10px;
-    background: #0f9c02;
+    background: #394b32;
     cursor: pointer;
     border: none;
     color: white;
     box-shadow: inset 3px 3px 10px 3px #394B32;
+    align-self: center;
+    width: 70%;
 }
 #selectedOrdersPannel
 {
@@ -49,9 +117,11 @@ main
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
-    height: 90%;
+    height: 65vh;
+    overflow-y: auto;
+    scrollbar-width: none;
     overflow-y: auto;
     scrollbar-width: none;
 
@@ -62,10 +132,13 @@ main
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background: #394b32;
-    border-radius: 20px;
-    padding: 10px;
-    color: #faf7f094;
+    background: #FAF7F0;
+    box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.257);
+    border-radius: 10px;
+    padding: 5px 30px;
+    color: black;
+    position: relative;
+    
 
 }
 .OrderPannel-Info 
@@ -75,6 +148,12 @@ main
     justify-content: center;
     align-items: start;
     gap: 5px;
+}
+.OrderPannel-Info > span
+{
+    font-size: 15px;
+    font-weight: bold;
+    opacity: .7;
 }
 .OrderPannel-actions
 {
@@ -86,16 +165,17 @@ main
 }
 .OrderPannel-actions button
 {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: inset 2px 2px 4px 2px rgb(231, 212, 138);
-    opacity: .5;
+    box-shadow: inset 2px 2px 14px 5px rgba(36, 29, 2, 0.254);
+    opacity: 1;
+    
 }
 .OrderPannel-actions button:hover
 {
@@ -103,17 +183,18 @@ main
 }
 .OrderPannel-actions > button:first-child{
     
-    background: rgba(255, 0, 0, 0.979);
+    background: rgba(212, 10, 10, 0.979);
 }
 .OrderPannel-actions > button:last-child{
     
-    background: rgb(2, 219, 2);
+    background: rgb(8, 156, 8);
 }
 .OrderPannel-actions > small{
-    background: rgba(0, 0, 0, 0.986);
-    box-shadow: inset 2px 2px 4px 2px rgb(220, 218, 159);
+    background: #394B32;
     border-radius: 10px;
     padding: 5px 20px;
+    opacity: 1;
+    color: #E8DBC7;
 
 
 }
@@ -137,15 +218,16 @@ main
 }
 .modal-content
 {
-    width: 80%;
+    width: 50%;
     height: 85%;
-    background: #E8DBC7;
+    background: #e8dbc790;
     border-radius: 10px;
     position: relative;
     display: flex;
     align-items: end;
     justify-content: center;
     box-shadow: 0px 0px 40px 1px rgba(0, 0, 0, 0.582) ;
+
 }
 #closeModal
 {
@@ -206,17 +288,12 @@ main
     height: 100%;
     padding: 0 30px;
     border: none;
-    cursor: pointer;
+    opacity: .5;    
 }
 .modal-searchResultContainer
 {
     flex: 1;
-    background: #faf7f02c;
-    width: 80%;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: .5px solid  #394b32;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -225,7 +302,6 @@ main
     padding: 20px;
     overflow-y: auto;
     scrollbar-width: none;
-
     
 }
 .OrderPannel-filtered
@@ -233,12 +309,151 @@ main
     background: #FAF7F0;
     box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.425);
     color: #000 !important;
+    opacity: .8;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+    
+    width: 100%;    
+
+}
+.OrderPannel-filtered .OrderPannel-actions
+{
+    justify-content: end;
+}
+.OrderPannel-filtered:hover
+{
+    opacity: 1;
+}
+.orderPannel-badge{
+    max-width: fit-content;
+    place-self: center;
 }
 .addToListBtns
 {
-    background: white !important;
+    background: #234a23 !important;
     opacity: 1 !important;
-    box-shadow: inset 1px 1px 10px 2px rgb(1, 6, 0) !important;
+    color: #FAF7F0;
+    box-shadow: inset 1px 1px 10px 2px rgba(1, 6, 0, 0.088) !important;
+    place-self: end;
+}
+.remove-order
+{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: black;
+    font-weight: bolder;
+    /* background: #ff0000; */
+    box-shadow: inset 1px 1px 3px 1px rgb(250, 244, 244);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    cursor: pointer;
 }
 
 
+#PaimentContainer
+{
+    width: 50%;
+    min-width: 450px;
+    height: fit-content;
+    background: #f2efe6f6;
+    box-shadow: 0 0 70px 4px rgba(0, 0, 0, 0.241);
+    border-radius: 10px;
+    
+    padding: 10px;
+}
+#PaimentContainer h3{
+    text-align: center;
+    color: #E8DBC7;
+    font-style: italic;
+    font-size: 3vw;
+    font-weight:lighter;
+    background: #394B32;
+    border-radius: 10px;
+
+}
+legend
+{
+    font-weight: bolder;
+}
+#PaimentContainer form
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#PaimentContainer input
+{
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 0;
+    font-size: 12px;
+    background: transparent;
+    width: 95%;
+    padding-left: 10px;
+}
+fieldset
+{
+    border: none;
+}
+#cartBancaireGroup
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+#paiment-CartNum
+{
+    width: 100%;
+    
+
+}
+.paiement-inputContainer
+{
+    background: #faf7f01e;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    height: 50px;
+    padding: 10px 0;
+    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.072);
+    display: flex;
+    align-items: center;
+    border: .5px solid #394B32;
+}
+#PaimentContainer label > span
+{
+    font-size: 9px;
+    opacity: .5;
+
+}
+#cartBancaireGroup  > div{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px ,1fr));
+    gap: 5px;
+}
+#paymentBtn
+{
+    width: 100%;
+    background: #234a23;
+}
+
+
+
+.errorMsg{
+    display: none;
+    color: red;
+    font-size: 9px;
+    padding: 5px;
+    border-radius: 10px;
+    background: rgba(255, 0, 0, 0.304);
+}
+.showErrorMsg{
+    display: block;
+}
