@@ -62,7 +62,11 @@ function showOrderFactor()
 
     const OrderAgainBtn = document.createElement("button");
     OrderAgainBtn.innerText="Créer un autre café   →";
-    OrderAgainBtn.addEventListener("click",() => { backToOrderPage(); }); //come back
+    OrderAgainBtn.addEventListener("click",() => { backToOrderPage(); }); 
+
+    const goToPayBtn = document.createElement("button");
+    goToPayBtn.innerText = "check and pay";
+    goToPayBtn.addEventListener("click",()=>{location.href = "../Html/Checkout.html"})
 
     const paymentLastMsg = document.createElement("small");
     paymentLastMsg.innerText="✓  Votre sélection reste modifiable à tout moment.";
@@ -70,6 +74,8 @@ function showOrderFactor()
     factorFooter.appendChild(displayPrice);
     factorFooter.appendChild(paymentMsg);
     factorFooter.appendChild(OrderAgainBtn);
+    // if(selectedOptions.length > 0)
+        factorFooter.append(goToPayBtn);
     factorFooter.appendChild(paymentLastMsg);
 
     factorHeader.classList.add("factorHeader");
@@ -102,7 +108,8 @@ function displayCafeSignature()
         </div>
         <button>Modifier</button>
         ` ;
-        cafeSignature= document.getElementById("cafeSignature");
+        let cafeSignature= document.getElementById("cafeSignature");
         cafeSignature.innerText= cafeSignatureText;
         pricePanel.classList.add("pricePanel_TicketPhase");
 }
+
