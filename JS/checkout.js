@@ -18,6 +18,7 @@ const cardPattern = /^\d{13-19}$/;
 const cvvPattern = /^\d{3,4}$/;
 const expiryPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
 
+const coffeeCartKey = "coffeeCart";
 
 document.addEventListener("DOMContentLoaded",() =>{loadSeletedProducts(); initiateTotalPrice();})
 
@@ -47,7 +48,10 @@ function removeSelectedOrder(e)
     selectedProdContainer.removeChild(targetOrder);
 
     let targetProduct = coffeeCart.find(p => p.id == targetRemoveBtn.dataset.productId)
+
     coffeeCart.splice(coffeeCart.indexOf(targetProduct),1);
+
+    localStorage.setItem(coffeeCartKey,JSON.stringify(coffeeCart));
 
     updateTotalPrice(targetProduct.price,targetProduct.quantity,true);
 }
@@ -79,6 +83,16 @@ let totalPrice = 0;
 function loadSeletedProducts()
 {
     selectedProdContainer.innerHTML="";
+    
+    let savedProducts =  JSON.parse(localStorage.getItem(coffeeCartKey)) ?? [];
+    if(savedProducts.length > 0)
+    {
+        coffeeCart = JSON.parse(localStorage.getItem(coffeeCartKey))
+    }
+    else
+    {
+        localStorage.setItem(coffeeCartKey,JSON.stringify(coffeeCart));
+    }
     coffeeCart.forEach(prod =>{
         selectedProdContainer.innerHTML+=`
          <div class="OrderPannel">
@@ -130,21 +144,24 @@ function decreaseProductQuantity(e)
     let productId = targetBtn.dataset.productId;
 
     let targetProduct = coffeeCart.find(prod => prod.id === productId);
-    updateTotalPrice(targetProduct.price,targetProduct.quantity,true);
-
+    
     if(targetProduct.quantity > 1)
     {
+        updateTotalPrice(targetProduct.price,targetProduct.quantity,true);
+
         targetProduct.quantity --;
+
         const displayQuantity = document.getElementById(`id_${targetProduct.id}`);
         displayQuantity.innerText = targetProduct.quantity.toString();
+        
+        updateTotalPrice(targetProduct.price,targetProduct.quantity);
     }
-    updateTotalPrice(targetProduct.price,targetProduct.quantity);
 
     
     
 }
 
-function debounce(callback,delay = 1000)
+function debounce(callback,delay )
 {
     let timerId;
     return function (...args){
@@ -157,7 +174,7 @@ function debounce(callback,delay = 1000)
     }
 }
 
-let saerchDebounce = debounce(displayFiltredProducts);
+let saerchDebounce = debounce(displayFiltredProducts,1000);
 searchInput.addEventListener("input",(e)=>{
     saerchDebounce(e.target.value);
 });
@@ -187,6 +204,7 @@ function displayFiltredProducts(searchTerm)
             `;
             
             const productBadge = document.getElementById(`badge_${p.id}`);
+
             if(!coffeeCart.some(prod => prod.id === p.id ))
             {
                 productBadge.innerText="new order";
@@ -216,10 +234,15 @@ function appendNewOrderToOrdersList(e)
     if(!addBtn && !filtredProductsContainer.contains(addBtn)) return;
 
     const targetProduct = coffeeProducts.find(p => p.id === addBtn.dataset.productId);
+
+
     if(!coffeeCart.some(p => p.id == targetProduct.id))
     {
         targetProduct.quantity = 1;
         coffeeCart.push(targetProduct);
+
+        localStorage.setItem(coffeeCartKey,JSON.stringify(coffeeCart));
+
         updateTotalPrice(targetProduct.price,targetProduct.quantity);
         filtredProductsContainer.removeChild(addBtn.closest(".OrderPannel-filtered"));
         loadSeletedProducts();
@@ -245,9 +268,9 @@ function updateTotalPrice(price ,quantity,isRemoved = false)
         totalPrice -= (price * quantity);
     else
         totalPrice += (price * quantity);
-    
-    
-   displayTotalPrice.innerText = totalPrice.toString();
+
+    if(totalPrice < 1) totalPrice = 0;
+   displayTotalPrice.innerText = totalPrice.toFixed(2).toString();
 }
 
 
@@ -265,9 +288,9 @@ function isvalidPhone(phone)
      return phonePattern.test(phone);
 }
 
-function onlyDigits(stringFormat = "")
+function onlyDigits(stringFormat)
 {
-    return stringFormat.replace(/\D/g,"")
+    return stringFormat.replace(/\D/g,"");
 }
 function isValidCard(cardNumber)
 {
@@ -281,7 +304,6 @@ function isValidExpiryDate(date)
 {
     return expiryPattern.test(date);
 }
-
 
 function validateInput(input ,isvalide)
 {
@@ -302,25 +324,25 @@ function validateInputs(e)
     switch(targetInput.name)
     {
         case "firstName" :
-            validateInput(targetInput,isValidName(targetInput.value));
+            validateInput(targetInput,isValidName(targetInput.value.trim()));
         break;
         case "lastName" :
-            validateInput(targetInput,isValidName(targetInput.value));
+            validateInput(targetInput,isValidName(targetInput.value.trim()));
         break;
         case "email" :
-            validateInput(targetInput,isvalidEmail(targetInput.value));
+            validateInput(targetInput,isvalidEmail(targetInput.value.trim()));
         break;
         case "phone" :
-            validateInput(targetInput,isvalidPhone(targetInput.value));
+            validateInput(targetInput,isvalidPhone(targetInput.value.trim()));
         break;
         case "cardNumber":
-            validateInput(targetInput,isValidCard(targetInput.value));
+            validateInput(targetInput,isValidCard(onlyDigits(targetInput.value.trim())));
         break;
         case "cvv":
-            validateInput(targetInput,isValidCvv(targetInput.value));
+            validateInput(targetInput,isValidCvv(targetInput.value.trim()));
         break;
         case "expiry":
-            validateInput(targetInput,isValidExpiryDate(targetInput.value));
+            validateInput(targetInput,isValidExpiryDate(targetInput.value.trim()));
         break;
         default: break;
         
