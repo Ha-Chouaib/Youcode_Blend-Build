@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../scr/output.css">
+    <link rel="stylesheet" href="../Css/dashboard.css">
+    <script src="../JS/dashboard.js" defer></script>
+    <title>Document</title>
+    <style>
+        .test{
+            color: #ffffff28;
+        }
+    </style>
+</head>
+<body class="px-[5vw] h-[100vh] pt-2 text-[#E8DBC7] bg-[#E8DBC7] ">
+    <header class="bg-[#394B32] flex flex-row justify-between  rounded-lg   p-3 text-[#E8DBC7]">
+        <div class="flex gap-10">
+            <h1>❦ BRUME</h1>
+            <span>le cafe reinvente</span>
+        </div>
+        <div class="flex flex-row ">
+            <span class="mr-3">admin</span><span class="border-2 rounded-[50%] w-[30px] h-[30px] flex justify-center items-center">👤︎</span>
+        </div>
+    </header>
+    <main>
+        <div>
+           <ol class="flex mt-5 text-black">
+
+                <li class="relative mb-6 sm:mb-0 grow">
+                    <span id="step1Title" class="font-black absolute -left-[0%] -bottom-[7vh] px-5 py-2 inline-block whitespace-nowrap
+                    bg-[#FFFFFF8A]
+                    rounded-2xl shadow-[inset_4px_4px_20px_3px_#41653D,0_5px_25px_-5px_black] border-none">
+                    Informations Générales</span>
+                    <div class="flex items-center">
+                        <div id="step1" class="z-10 flex items-center justify-center   shadow-[inset_2px_2px_15px_5px_#394B32,0px_0px_70px_5px_black] rounded-[50%] w-[50px] h-[50px]  shrink-0">
+                            <span class="text-lg font-black ">1</span>
+                        </div>
+                        <div id="step1_step2_bar" class="sm:flex w-full bg-black  h-2"></div>
+                    </div>
+                </li>
+
+                <li class="relative mb-6 sm:mb-0  grow">
+                    <span id="step2Title" class=" font-black absolute -left-[6vw] -bottom-[7vh] px-5 py-2 inline-block whitespace-nowrap
+                    bg-[#FFFFFF8A]
+                    rounded-2xl shadow-[inset_4px_4px_20px_3px_#41653D,0_5px_25px_-5px_black] border-none">
+                        Caractéristiques & Options</span>
+                    <div class="flex items-center">
+                        <div id="step2" class="z-10 flex items-center justify-center w-6 h-6   shadow-[inset_2px_2px_15px_5px_#394B32,0px_0px_70px_5px_black] rounded-[50%] w-[50px] h-[50px] shrink-0">
+                            <span class="text-lg font-black">2</span>
+                        </div>
+                        <div id="step2_step3_bar" class="hidden sm:flex w-full bg-black  h-2"></div>
+                    </div>
+                   
+                </li>
+
+                <li class="relative mb-6 sm:mb-0 ">
+                    <span id="step3Title" class="text-[#41653D] font-black absolute -right-[0%] -bottom-[7vh] px-5 py-2 inline-block whitespace-nowrap
+                    bg-[#FFFFFF8A]
+                    rounded-2xl shadow-[inset_4px_4px_20px_3px_#41653D,0_5px_25px_-5px_black] border-none">
+                        Validation & Récapitulatif</span>
+                    <div id="step3" class="z-10 flex items-center justify-center w-6 h-6  shadow-[inset_2px_2px_15px_5px_#394B32,0px_0px_70px_5px_black] rounded-[50%] w-[50px] h-[50px] shrink-0">
+                        <span class="text-lg font-black">3</span>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <form id="MainPanel" class="w-full flex flex-col gap-3  bg-[#394B32] backdrop-blur-sm shadow-[inset_20px_20px_30px_10px_[#FFFFFF8A]] h-[fit-content] rounded-lg mt-[8vh] shadow-[-5px_5px_50px_3px_#10101085] px-[5vw] py-5">
+        
+        </form>
+
+        <div class="flex flex-row justify-center  gap-5 mt-2">
+            <button id="prevBtn" class="font-black flex justify-center items-center w-[40px] h-[40px] bg-[#394B32] rounded-full text-[#E8DBC7] shadow-[inset_1px_1px_10px_2px_#FFFFFF7D,5px_5px_70px_1px_black]  cursor-pointer">&lt;</button>
+            <button id="nextBtn" class="font-black flex justify-center items-center w-[40px] h-[40px] bg-[#394B32] rounded-full text-[#E8DBC7] shadow-[inset_1px_1px_10px_2px_#FFFFFF7D,5px_5px_70px_1px_black]  cursor-pointer">&gt;</button>
+        </div>
+
+        
+    </main>
+    
+</body>
+</html>

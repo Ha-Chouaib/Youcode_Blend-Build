@@ -1,0 +1,44 @@
+
+.tailleOption:has(input:checked)
+{
+    background: #f3e6cb;
+    box-shadow: inset 1px 1px 10px 2px #356f23;
+    color: black;
+}
+#promoBox:has(input:checked)
+{
+    background: #238f02;
+}
+.onStep
+{
+
+    box-shadow: inset 2px 2px 15px 5px #394B32,0px 0px 5px 15px #394b329c;
+    background-color: #238f02;
+    transition: background-color 1s linear; 
+}
+.barOnProgress
+{
+    background: #238f02;
+    transition: background-color 1s linear;
+}
+.onProgresstitleBox
+{
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #394B32;
+    border-bottom: #196804f4 5px solid;
+    text-shadow: 0px 5px 6px rgba(1, 31, 1, 0.516);
+    font-size: 19px;
+    font-weight: 900px;
+
+    transition: border-bottom 1s linear;
+
+}
+.confirmBtn{
+    width: 200px;
+    height: 40px;
+    background: #238f02;
+    color: white;
+    
+}
