@@ -16,17 +16,39 @@ const step3TitleBox = document.getElementById("step3Title");
 
 
 
+
 const generalMode = "general";
 const optionsMode = "options";
 const vereficationMode = "validation";
 
+const targetField_productName = "prodName";
+const targetField_productPrice = "prodPrice";
+const targetField_productCategory = "prodCategory";
+const targetField_productDiscount = "prodDiscount";
+const targetField_productPromoExpiry = "prodPromoExpiry";
+
 let currentMode = generalMode;
-let prevMode = "";
+
+
+let allowNavigation = false;
+let errorMsg = null;
+
+let cafeCategories = ["Base", "Classique", "Gourmand","Classique","Froid","Accessoire"];
+let cafeProducts=[];
+let currentCafe = { name:"", price: 0, category: cafeCategories[0], hasPromo: false, discountPercentage:0, promoExpiry: Date.now(), size:"M",
+                ingredients:[], notes:""};
+
+function initiateCurrentCofeObject(obj)
+{
+    obj = { name:"", price: 0, category: cafeCategories[0], hasPromo: false, discountPercentage:0, promoExpiry: Date.now(), size:"M",
+                ingredients:[], notes:""};
+}
 
 function drawGeneralInfoPanel()
 {
-    currentMode = generalMode;
+    let fragment = document.createDocumentFragment();
     step1SideEffects();
+
     mainPanel.innerHTML = `
     <div class="flex flex-col justify-center ">
                 <h2 class="text-lg  font-black" >Informations Générales</h2>
@@ -47,15 +69,14 @@ function drawGeneralInfoPanel()
                         <span>Prix de base</span>
                         <div class="bg-[#f6f2f2aa] w-[100%] rounded-lg h-[40px] flex flex-row items-center gap-5">
                             <span class="font-black flex-row flex justify-center items-center w-[30px]">$</span>
-                            <input class="bg-[#f6f2f2] grow h-[100%] rounded-lg grow" type="number" placeholder="Ex: 60.00">
+                            <input class="bg-[#f6f2f2] grow h-[100%] rounded-lg grow" name="productPrice" type="number" placeholder="Ex: 60.00">
                         </div>
                     </label>
                     <label class="w-[50%] flex flex-col gap-2">
                         <span>Categorie</span>
-                        <select class="gorw bg-[#f6f2f2] h-[40px] rounded-full">
+                        <select id="cafeCategory" class="gorw bg-[#f6f2f2] h-[40px] rounded-full cursor-pointer  text-center py-2">
                             <option value="" disabled selected>selectionnez une categories</option>
-                            <option value="">opt1</option>
-                            <option value="">opt2</option>
+                            
                         </select>
                     </label>
                 </div>
@@ -100,11 +121,32 @@ function drawGeneralInfoPanel()
 
             </div>
     `;
+
+    cafeCategories.forEach(c =>{
+        const categoryOption = document.createElement("option");
+        categoryOption.value = c;
+        categoryOption.innerText = c;
+        categoryOption.style.cssText =`
+
+            background: black;
+            color: #4b6636;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+        `;
+
+        fragment.append(categoryOption);
+    });
+    let cafeCategorySelectElement = document.getElementById("cafeCategory");
+    cafeCategorySelectElement.append(fragment);
+
+    fragment = null;
+    currentMode = generalMode;
+
 }
 
 function drawCracteristiques_OptionsPanel()
 {
-    currentMode = optionsMode;
     step2SideEffects();
     mainPanel.innerHTML = `
     <div class="h-[20%] flex flex-col justify-center gap-1 ">
@@ -122,19 +164,19 @@ function drawCracteristiques_OptionsPanel()
                     <div class="flex flex-row gap-2">
                         <div class="flex flex-row gap-2">
                             <label class="tailleOption cursor-pointer flex items-center justify-center bg-[#394B32] w-[50px] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7]">
-                                <input class="w-[1px] " style="appearance: none;" name="taille" type="radio">
+                                <input class="w-px " style="appearance: none;" name="taille" value="S" type="radio">
                                 <span >S</span>
                             </label>
                             <label class="tailleOption cursor-pointer flex items-center justify-center bg-[#394B32] w-[50px] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7]">
-                                <input class="w-[1px] " checked style="appearance: none;" name="taille" type="radio">
+                                <input class="w-px " checked style="appearance: none;" name="taille" value="M" type="radio">
                                 <span >M</span>
                             </label>
                             <label class="tailleOption cursor-pointer flex items-center justify-center bg-[#394B32] w-[50px] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7]">
-                                <input class="w-[1px] " style="appearance: none;" name="taille" type="radio">
+                                <input class="w-px " style="appearance: none;" name="taille" value="L" type="radio">
                                 <span >L</span>
                             </label>
                             <label class="tailleOption cursor-pointer flex items-center justify-center bg-[#394B32] w-[50px] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7]">
-                                <input class="w-[1px] " style="appearance: none;" name="taille" type="radio">
+                                <input class="w-px " style="appearance: none;" name="taille" value="XL" type="radio">
                                 <span >XL</span>
                             </label>
                 
@@ -150,8 +192,8 @@ function drawCracteristiques_OptionsPanel()
                     </div>
                     <div class="flex flex-row gap-3">
                         <div class="flex flex-row gap-2">
-                            <span class=" flex items-center justify-between bg-[#394B32] w-[fit-content] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7] pl-5 pr-2"><small>Arabica</small> <span class="cursor-pointer ml-2 bg-black w-[20px] h-[20px]  rounded-full flex items-center justify-center">x</span></span>
-                            <span class=" flex items-center justify-between bg-[#394B32] w-[fit-content] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7] pl-5 pr-2"><small>Robusta</small> <span class="cursor-pointer ml-2 bg-black w-[20px] h-[20px]  rounded-full flex items-center justify-center">x</span></span>
+                            <span data-value="Arabica" class="ingredients  flex items-center justify-between bg-[#394B32] w-[fit-content] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7] pl-5 pr-2"><small>Arabica</small> <span class="cursor-pointer ml-2 bg-black w-[20px] h-[20px]  rounded-full flex items-center justify-center">x</span></span>
+                            <span data-value="Robusta" class="ingredients flex items-center justify-between bg-[#394B32] w-[fit-content] rounded-full shadow-[inset_1px_1px_10px_1px_#f8faf8b7] pl-5 pr-2"><small>Robusta</small> <span class="cursor-pointer ml-2 bg-black w-[20px] h-[20px]  rounded-full flex items-center justify-center">x</span></span>
                         </div>
                         <button class="cursor-pointer flex items-center justify-center bg-[#0c8e01fe] min-w-[fit-content] px-5 py-2 text-black rounded-lg shadow-[inset_1px_1px_10px_1px_#E8DBC7]">+ Ajouter</button>
                     </div>
@@ -163,16 +205,25 @@ function drawCracteristiques_OptionsPanel()
                         <span class="font-bold">Notes speciales</span>
                         <small>Ajoutez une note si necessaire.</small>
                     </div>
-                    <textarea class="border-2 border-black rounded-lg px-5 text-center outline-none" name="notes" id="" placeholder="Ex: Produit recommande..."></textarea>
+                    <textarea id="notes" class="border-2 border-black rounded-lg px-5 text-center outline-none" name="notes" id="" placeholder="Ex: Produit recommande..."></textarea>
                 </div>
                 
             </div>
     `;
+
+    mainPanel.addEventListener("change",(e)=>{
+        let targetSize = e.target;
+        if(targetSize.type === 'radio')
+        {
+            currentCafe.size = targetSize.value;
+        }
+    });
+    currentMode = optionsMode;
+
 }
 
 function drawValidationPanel()
 {
-    currentMode = vereficationMode;
     step3SideEffects();
     mainPanel.innerHTML = `
     
@@ -204,7 +255,9 @@ function drawValidationPanel()
 
             </div>
     `;
+    currentMode = vereficationMode;
 }
+
 
 function forwordSwitch(mode)
 {
@@ -242,12 +295,21 @@ function backWordSwitch(mode)
 }
 function switchPanels(mode , isBackword = true)
 {
-    if(isBackword)
+    if(allowNavigation)
+    {
+         if(isBackword)
         backWordSwitch(mode);    
-    else
+        else
         forwordSwitch(mode);
+    }else
+    {
+
+    }
+
+   
     
 }
+
 
 function step1SideEffects()
 {
@@ -307,13 +369,179 @@ function confirmBtnStateChanged(isConfirmMode = true)
     }
 }
 
-function validateCoffeeData()
+function isPositiveNumber(term)
 {
+    if(isNaN(term) || (Number(term) < 0 ) ) return false;
+    return true;
+}
 
+function validateProductName(term)
+{
+    if(term === "") return pickErrorMsg(targetField_productName);
+    return null;
+}
+
+function validateProductPrice(term)
+{
+    if( term === "" || !isPositiveNumber(term)) return pickErrorMsg(targetField_productPrice) ;
+    return null;
+}
+
+function validateProductCategory(term)
+{
+    if(term == "" || ! cafeCategories.includes(term)) return pickErrorMsg(targetField_productCategory);
+    return null;
+}
+
+function validateProductDiscount(term)
+{
+   if(term === "" || !isPositiveNumber(term)) return pickErrorMsg(targetField_productDiscount);
+   return null;
+}
+
+function validateProductExpiryDate(term)
+{
+    let date = new Date(term);
+    if( term == "" || date < Date.now()) return pickErrorMsg(targetField_productPromoExpiry);
+    return null;
+}
+
+
+function validateCoffeeRequiredData( name , price, category)
+{
+     return validateProductName(name) ?? validateProductPrice(price) ?? validateProductCategory(category);
+   
+}
+function validateCoffeeOptionalData(discount, expiryDate)
+{
+    return validateProductDiscount(discount) ?? validateProductExpiryDate(expiryDate);
+}
+
+
+function collectGeneralDataAndValidate()
+{
+   const cafeNameElement = document.querySelector(`input[name="productName"]`);
+    const cafePriceElement = document.querySelector(`input[name="productPrice"]`);
+    const cafeCategoryElement = document.getElementById("cafeCategory");
+    const cafePromoElement = document.querySelector(`input[name="promotion"]`);
+    const cafePromoDiscountElement =document.querySelector(`input[name="promoPercent"]`);
+    const cafePromoExpiryElement = document.querySelector(`input[name="promoExpiry"]`);
+
+
+    let name = cafeNameElement.value;
+    let price = cafePriceElement.value;
+    let category = cafeCategoryElement.value;
+    let discount = "0";
+    let expiry = "--/--/--";
+
+    
+    errorMsg = validateCoffeeRequiredData(name,price,category);
+
+    if(cafePromoElement.checked)
+    {
+        
+        discount = cafePromoDiscountElement.value;
+        expiry = cafePromoExpiryElement.value;
+        errorMsg = errorMsg ?? validateCoffeeOptionalData(discount,expiry);
+        if(errorMsg == null) currentCafe.hasPromo = true;
+    } 
+
+    
+    if(errorMsg == null)
+    {
+        currentCafe.name = name;
+        currentCafe.price = Number( price );
+        currentCafe.category = category;
+        currentCafe.discountPercentage = Number(discount);
+        currentCafe.promoExpiry = new Date(expiry);
+
+        allowNavigation =true;
+    }else
+    {
+        allowNavigation =false;
+
+        console.log("Error: ", errorMsg);
+    }
+
+
+    
+}
+
+
+function collectCaracteristiquesOptionsData()
+{
+    let ingredientsList = [];
+    let notes = "";
+
+    
+
+    const ingredients = document.querySelectorAll(".ingredients");
+    ingredients.forEach(ing =>{
+        ingredientsList.push(ing.dataset.value);
+    }) ;
+
+    const notesEle = document.getElementById("notes");
+    notes = notesEle.value;
+
+    currentCafe.ingredients = ingredientsList;
+    currentCafe.notes = notes;
+
+
+}
+
+
+function pickErrorMsg(targetField)
+{
+    switch(targetField)
+    {
+        case targetField_productName:
+            return"Invalide product name please enter it in valid format";
+        case targetField_productPrice:
+           return"price value is invalide";
+        case targetField_productCategory:
+           return"cafe category is required";
+        case targetField_productDiscount:
+           return"In case you check the Promotion discount amount is required, and must be valid value";
+        case targetField_productPromoExpiry:
+            return"In case you check the Promotion expiry date is required, and must be valid value";
+    }
+}
+
+function UplaodcofeData()
+{
+    const cafeNameElement = document.querySelector(`input[name="productName"]`);
+    const cafePriceElement = document.querySelector(`input[name="productPrice"]`);
+    const cafeCategoryElement = document.getElementById("cafeCategory");
+    const cafePromoElement = document.querySelector(`input[name="promotion"]`);
+    const cafePromoDiscountElement =document.querySelector(`input[name="promoPercent"]`);
+    const cafePromoExpiryElement = document.querySelector(`input[name="promoExpiry"]`);
+
+    if(currentMode == generalMode)
+    {
+        cafeNameElement.value = currentCafe.name;
+        cafePriceElement.value = currentCafe.price;
+        cafeCategoryElement.value = currentCafe.category;
+
+        cafePromoElement.checked = currentCafe.hasPromo;
+        if( currentCafe.hasPromo)
+        {
+            cafePromoDiscountElement.value = currentCafe.discountPercentage;
+            cafePromoExpiryElement.value = currentCafe.promoExpiry;
+        }
+        
+    }
+    if(currentMode == optionsMode)
+    {
+        
+        document.getElementById("notes").value = currentCafe.notes;
+        document.querySelector(`input[value="${currentCafe.size}"]`).checked = true;
+    }
+    
 }
 
 document.addEventListener("DOMContentLoaded", ()=>
 {
+    initiateCurrentCofeObject(currentCafe);
     drawGeneralInfoPanel();
     currentMode = generalMode;
     prevBtn.style.display = "none";
@@ -325,6 +553,7 @@ mainPanel.addEventListener("submit",(e)=>{
 prevBtn.addEventListener("click",()=>
 {
     switchPanels(currentMode);
+    UplaodcofeData();
     if(currentMode === generalMode)
     {
         prevBtn.style.display = "none";
@@ -333,8 +562,29 @@ prevBtn.addEventListener("click",()=>
 
 nextBtn.addEventListener("click",()=>
 {
-    switchPanels(currentMode, false);
-    if(currentMode !== generalMode)
-        prevBtn.style.display = "block";
+
+    if(currentMode == vereficationMode)
+    {
+        cafeProducts.push(currentCafe);
+        // show msg
+        initiateCurrentCofeObject(currentCafe);
+        drawGeneralInfoPanel();
+
+    }else
+    {
+        if(currentMode == optionsMode)
+        {
+           collectCaracteristiquesOptionsData();
+
+
+        } 
+        if(currentMode == generalMode) collectGeneralDataAndValidate();
+
+        switchPanels(currentMode, false);
+
+         if(currentMode !== generalMode)
+            prevBtn.style.display = "block";
+    }
+
     
 });
