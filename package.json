@@ -7,10 +7,10 @@
     "@tailwindcss/cli": "^4.3.3",
     "tailwindcss": "^4.3.3"
   },
- "scripts": {
-  "dev": "tailwindcss -i ./scr/input.css -o ./scr/output.css --watch",
-  "build": "tailwindcss -i ./scr/input.css -o ./scr/output.css"
-},
+  "scripts": {
+    "dev": "tailwindcss -i ./scr/input.css -o ./scr/output.css --watch",
+    "build": "tailwindcss -i ./scr/input.css -o ./scr/output.css"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ha-Chouaib/Youcode_Blend-Build.git"
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Ha-Chouaib/Youcode_Blend-Build/issues"
   },
-  "homepage": "https://github.com/Ha-Chouaib/Youcode_Blend-Build#readme"
+  "homepage": "https://github.com/Ha-Chouaib/Youcode_Blend-Build#readme",
+  "dependencies": {
+    "sweetalert2": "^11.26.25"
+  }
 }

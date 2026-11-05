@@ -1,3 +1,6 @@
+// import Swal from 'sweetalert2'
+// const Swal = require('sweetalert2')
+// import Swal from 'https://jsdelivr.net';
 
 const mainPanel = document.getElementById("MainPanel");
 const prevBtn = document.getElementById("prevBtn");
@@ -26,22 +29,34 @@ const targetField_productPrice = "prodPrice";
 const targetField_productCategory = "prodCategory";
 const targetField_productDiscount = "prodDiscount";
 const targetField_productPromoExpiry = "prodPromoExpiry";
+const targetField_productImagePath = "prodImagePath";
+
 
 let currentMode = generalMode;
 
 
 let allowNavigation = false;
 let errorMsg = null;
+const defaultImagePath = "../Assets/Café M.png";
 
 let cafeCategories = ["Base", "Classique", "Gourmand","Classique","Froid","Accessoire"];
 let cafeProducts=[];
 let currentCafe = { name:"", price: 0, category: cafeCategories[0], hasPromo: false, discountPercentage:0, promoExpiry: Date.now(), size:"M",
-                ingredients:[], notes:""};
+                ingredients:[], notes:"",ImagePath:defaultImagePath};
 
+
+function initApp()
+{
+    initiateCurrentCofeObject(currentCafe);
+    drawGeneralInfoPanel();
+    currentMode = generalMode;
+    prevBtn.style.display = "none";
+    nextBtn.innerText = ">";
+}
 function initiateCurrentCofeObject(obj)
 {
     obj = { name:"", price: 0, category: cafeCategories[0], hasPromo: false, discountPercentage:0, promoExpiry: Date.now(), size:"M",
-                ingredients:[], notes:""};
+                ingredients:[], notes:"" , imagePath:"../Assets/Café M.png"};
 }
 
 function drawGeneralInfoPanel()
@@ -50,10 +65,29 @@ function drawGeneralInfoPanel()
     step1SideEffects();
 
     mainPanel.innerHTML = `
-    <div class="flex flex-col justify-center ">
-                <h2 class="text-lg  font-black" >Informations Générales</h2>
-                <small>Commencez par les information de base de votre produit</small>
+            <div class = "flex flex-row justify-between items-center w-full">
+                <div class="flex flex-col justify-center ">
+                    <h2 class="text-lg  font-black" >Informations Générales</h2>
+                    <small>Commencez par les information de base de votre produit</small>
+                </div>
+                <div class=" max-w-md ">
+                    <span id="removeImg" class="hidden bg-black flex items-center justify-center w-7 h-7 rounded-full relative left-[95%]" >X</span>
+                      <label class="relative flex flex-col items-center justify-center w-full h-[100px] p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                          <svg class="w-8 h-8 mb-3 text-gray-400" aria-hidden="true" xmlns="http://w3.org" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                          </svg>
+                          <p class="mb-1 text-sm text-gray-500 font-medium"><span class="text-[#394B32] font-bold">Click to upload</span> or drag and drop</p>
+                          <p class="text-xs text-gray-400">PNG, JPG or WebP up to 5MB</p>
+                        </div>
+
+                        <img id="boxImagePreview" src="" alt="Product Preview" class="hidden absolute inset-0 w-full h-full object-cover" />
+                        <input type="file" id="productImage" class="hidden" accept="image/*" />
+                      </label>
+                </div>
+
             </div>
+            
             <div class="h-[80%] rounded-lg flex flex-col gap-4">
                 <label class="">
                     <span class="font-bold" >Nom du produit</span>
@@ -69,7 +103,7 @@ function drawGeneralInfoPanel()
                         <span>Prix de base</span>
                         <div class="bg-[#f6f2f2aa] w-[100%] rounded-lg h-[40px] flex flex-row items-center gap-5">
                             <span class="font-black flex-row flex justify-center items-center w-[30px]">$</span>
-                            <input class="bg-[#f6f2f2] grow h-[100%] rounded-lg grow" name="productPrice" type="number" placeholder="Ex: 60.00">
+                            <input class="bg-[#f6f2f2] grow h-[100%] rounded-lg grow" name="productPrice" type="number" min="1" maxlength="5" placeholder="Ex: 60.00">
                         </div>
                     </label>
                     <label class="w-[50%] flex flex-col gap-2">
@@ -108,7 +142,7 @@ function drawGeneralInfoPanel()
                             <span>Poutcentage de reduction</span>
                             <div class="w-full flex bg-[#394B32] rounded-full h-[40px] ">
                                 <input class="text-black bg-[#f6f2f2] grow h-[100%] rounded-lg "
-                                 type="number" placeholder="Ex: 20" name="promoPercent">
+                                 type="number" min="1" maxlength="3" placeholder="Ex: 20" name="promoPercent">
                                 <span class="w-[30px] flex justify-center items-center">%</span>
                             </div>
                         </label>
@@ -131,8 +165,8 @@ function drawGeneralInfoPanel()
             background: black;
             color: #4b6636;
             cursor: pointer;
-            font-size: 17px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: semi-bold;
         `;
 
         fragment.append(categoryOption);
@@ -143,7 +177,47 @@ function drawGeneralInfoPanel()
     fragment = null;
     currentMode = generalMode;
 
+    const ImagePathInput = document.getElementById("productImage");
+    const DisplayImageEle = document.getElementById("boxImagePreview");
+    const RemoveImgEle = document.getElementById("removeImg");
+    
+    ImagePathInput.addEventListener("change",(e)=>{
+
+    const filesList = e.target.files;
+
+    if (filesList && filesList.length > 0) {
+      const file = filesList[0];
+
+      if (file.type.startsWith('image/')) {
+         const reader = new FileReader();
+
+        reader.onload = function(e) {
+          if (e.target.result) {
+
+            DisplayImageEle.src = e.target.result;
+            currentCafe.ImagePath = e.target.result;
+            
+            RemoveImgEle.classList.remove('hidden');
+            DisplayImageEle.classList.remove('hidden');
+          }
+        };
+
+        reader.readAsDataURL(file);
+      }}
+
+
+      });
+      RemoveImgEle.addEventListener("click",(e)=>{
+        e.preventDefault();
+        e.target.src = "";
+        DisplayImageEle.classList.add('hidden');
+        RemoveImgEle.classList.add('hidden');
+        ImagePathInput.value ="";
+        currentCafe.ImagePath = defaultImagePath;
+      });
+
 }
+
 
 function drawCracteristiques_OptionsPanel()
 {
@@ -232,12 +306,12 @@ function drawValidationPanel()
                 <div>
                 <span class="font-bold">Resume du produit</span>
                 <div class="bg-black  w-[300px] h-[300px] rounded-lg flex flex-col items-center gap-4">
-                    <figure><img src="../Assets/Café M.png" width="100px" height="100px" alt=""></figure>
+                    <figure><img class="rounded-full" src="${currentCafe.ImagePath}" width="100px" height="100px" alt=""></figure>
                     <div class="flex flex-col gap-4">
-                        <h3 class="border-b-2 border-b-[#394B32]">Cafe Arabica Premium</h3>
+                        <h3 class="border-b-2 border-b-[#394B32]">${currentCafe.name}</h3>
                         <span class="bg-[#394B32] rounded-full w-[50px] flex items-center justify-center">cafe</span>
-                        <span>Prix de base: <span class="font-black">49:00DH</span></span>
-                        <div><span class="flex items-center justify-center rounded-full bg-[#f6f2f2] text-black ">-20%</span> <span class="opacity-[.5]">promo jusqu'au: <span>31/12/2026</span> </span>  </div>
+                        <span>Prix de base: <span class="font-black">${currentCafe.price.toFixed(2)}DH</span></span>
+                        <div><span class="flex items-center justify-center rounded-full bg-[#f6f2f2] text-black ">-${currentCafe.discountPercentage}%</span> <span class="opacity-[.5]">promo jusqu'au: <span>${currentCafe.promoExpiry.toLocaleDateString('en-US')}</span> </span>  </div>
                     </div>
                 </div>
             </div>
@@ -245,16 +319,21 @@ function drawValidationPanel()
             <!-- Caractéristiques -->
             <div class=" shadow-[inset_2px_2px_15px_5px_#394B32,0px_0px_20px_2px_#0000008b] rounded-lg px-5 py-2">
                 <h3 class="font-bold">Caractéristiques</h3>
-                <div><span>Tailles:</span>  <span>S,M</span></div>
-                <div><span>Ingredients:</span>  <span>Arabica, Robusta</span></div>
+                <div><span>Tailles:</span>  <span>${currentCafe.size}</span></div>
+                <div><span>Ingredients:</span>  <span id="ingredientsDisplay"></span></div>
             </div>
             <div class=" shadow-[inset_2px_2px_15px_5px_#394B32,0px_0px_20px_2px_#0000008b] rounded-lg px-5 py-2">
                 <h3 class="font-bold">Informations supplementaires</h3>
-                <span>Notes:</span> <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, exercitationem.</p>
+                <span>Notes:</span> <p>${currentCafe.notes || "no notes" }</p>
             </div>
 
             </div>
     `;
+    const displayGredientsEle = document.getElementById("ingredientsDisplay");
+    
+    currentCafe.ingredients.forEach(ing =>{
+        displayGredientsEle.innerText += ing + "/";
+    });
     currentMode = vereficationMode;
 }
 
@@ -375,6 +454,11 @@ function isPositiveNumber(term)
     return true;
 }
 
+function validateImagePath(path)
+{
+
+}
+
 function validateProductName(term)
 {
     if(term === "") return pickErrorMsg(targetField_productName);
@@ -460,7 +544,13 @@ function collectGeneralDataAndValidate()
     {
         allowNavigation =false;
 
-        console.log("Error: ", errorMsg);
+        Swal.fire({
+          title: 'Error!',
+          text: errorMsg,
+          icon: 'error',
+          confirmButtonText: 'Cool'
+        })
+        
     }
 
 
@@ -504,6 +594,8 @@ function pickErrorMsg(targetField)
            return"In case you check the Promotion discount amount is required, and must be valid value";
         case targetField_productPromoExpiry:
             return"In case you check the Promotion expiry date is required, and must be valid value";
+        case targetField_productImagePath:
+            return" sorry! check the image existance, if not exists will set default one!";
     }
 }
 
@@ -539,12 +631,10 @@ function UplaodcofeData()
     
 }
 
+
 document.addEventListener("DOMContentLoaded", ()=>
 {
-    initiateCurrentCofeObject(currentCafe);
-    drawGeneralInfoPanel();
-    currentMode = generalMode;
-    prevBtn.style.display = "none";
+    initApp();
 });
 mainPanel.addEventListener("submit",(e)=>{
     e.preventDefault();
@@ -565,12 +655,47 @@ nextBtn.addEventListener("click",()=>
 
     if(currentMode == vereficationMode)
     {
-        cafeProducts.push(currentCafe);
-        // show msg
-        initiateCurrentCofeObject(currentCafe);
-        drawGeneralInfoPanel();
 
-    }else
+        const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: true
+        });
+        swalWithBootstrapButtons.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, add it!",
+          cancelButtonText: "No, just ignore!",
+          reverseButtons: true
+        }).then((result) => {
+            
+        if (result.isConfirmed)
+        {
+            cafeProducts.push(currentCafe);
+        
+            initApp();
+
+            swalWithBootstrapButtons.fire({
+                title: "Added!",
+                text: "Your product has been added sucessfuly",
+                icon: "success"
+            });
+
+            console.log(cafeProducts);
+        } 
+        else if (result.dismiss === Swal.DismissReason.cancel)
+        swalWithBootstrapButtons.fire({
+          title: "Cancelled",
+          text: "No product is Added",
+          icon: "error"
+        });
+    });
+
+}else
     {
         if(currentMode == optionsMode)
         {
